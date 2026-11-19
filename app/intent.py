@@ -33,6 +33,9 @@ ACTIONS: dict[str, tuple[str, list[str]]] = {
         "show me his work", "his projects", "take me to the projects", "portfolio pieces",
         "I want to see what he built", "see his work",
         "let me see the projects"]),
+    "all_projects": ("open the page listing ALL of his projects with case studies", [
+        "see all projects", "show me every project", "the full project list", "more projects",
+        "open the projects page", "see more of his work"]),
     "experience": ("scroll to his experience and work history", [
         "his past jobs", "show his experience", "his work history", "internship", "career timeline"]),
     "skills": ("scroll to his skills and tech stack", [
