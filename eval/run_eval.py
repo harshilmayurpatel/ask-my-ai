@@ -1,7 +1,7 @@
 """Accuracy test for Ask my AI.
 
     python -m eval.run_eval            # retrieval check always; answer check if GROQ_API_KEY is set
-    python -m eval.run_eval --url https://<space>.hf.space   # test the deployed API instead
+    python -m eval.run_eval --url https://ask-my-ai.onrender.com   # test the deployed API instead
 
 Retrieval: is the expected knowledge section among the top-k chunks?
 Answers:   does the generated answer contain the expected facts?

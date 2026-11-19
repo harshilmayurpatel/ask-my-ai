@@ -1,4 +1,5 @@
-# Hugging Face Spaces (Docker SDK): runs as user 1000 and serves on port 7860.
+# Runs on Render (free web service) or any Docker host.
+# Render tells the app which port to use through $PORT; 7860 is the local default.
 FROM python:3.12-slim
 
 RUN useradd -m -u 1000 user
@@ -6,7 +7,8 @@ USER user
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH \
     PYTHONUNBUFFERED=1 \
-    FASTEMBED_CACHE=/home/user/app/.cache/fastembed
+    FASTEMBED_CACHE=/home/user/app/.cache/fastembed \
+    PORT=7860
 WORKDIR /home/user/app
 
 COPY --chown=user requirements.txt .
@@ -18,4 +20,5 @@ COPY --chown=user . .
 RUN python ingest.py
 
 EXPOSE 7860
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "7860"]
+# Shell form so $PORT is read at start-up; one worker keeps memory under 512 MB
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT} --workers 1

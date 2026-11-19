@@ -1,14 +1,3 @@
----
-title: Ask Harshil
-emoji: 💬
-colorFrom: indigo
-colorTo: blue
-sdk: docker
-app_port: 7860
-pinned: false
-short_description: RAG assistant that answers questions about Harshil Patel
----
-
 # Ask my AI: a RAG assistant for my portfolio
 
 **🌐 Live on my portfolio: [harshilmayurpatel.github.io](https://harshilmayurpatel.github.io/)** (use the **Ask my AI** button on any page)
@@ -34,7 +23,7 @@ Streamed answer (Server-Sent Events) + source sections
 | Vector search | FAISS | Fast in-memory similarity search, index built into the image |
 | LLM | Llama 3.3 70B on Groq | Free tier, very fast streaming |
 | API | FastAPI + SSE | Word-by-word streaming to the browser |
-| Hosting | Docker on Hugging Face Spaces | Free container hosting |
+| Hosting | Docker on Render | Free web service, redeploys on every push |
 
 ## How it stays accurate and safe
 - **Grounded answers:** the model may only use retrieved facts and says "I don't know" otherwise.
@@ -58,13 +47,15 @@ Open http://localhost:7860/docs to try `/chat`.
 ## Test
 ```bash
 python -m eval.run_eval                          # in-process
-python -m eval.run_eval --url https://<space>.hf.space   # deployed
+python -m eval.run_eval --url https://ask-my-ai.onrender.com   # deployed
 ```
 
-## Deploy (Hugging Face Spaces)
-1. Create a Space with the **Docker** SDK.
-2. Push this repo to the Space.
-3. In **Settings → Variables and secrets**, add the secret `GROQ_API_KEY`.
+## Deploy (Render, free)
+1. On [render.com](https://render.com), sign in with GitHub and choose **New → Blueprint**.
+2. Pick this repo. Render reads [`render.yaml`](render.yaml) and creates a free Docker web service.
+3. Paste your free Groq key as `GROQ_API_KEY` (or leave it empty to start without the LLM).
+
+Every push to `main` redeploys automatically. Free services sleep after ~15 minutes idle; the portfolio's chat shows "Waking up" while the first request starts it again.
 
 ## API
 `POST /chat` with `{"question": "...", "history": [{"role": "user", "content": "..."}]}` streams

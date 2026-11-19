@@ -1,0 +1,17 @@
+# Render Blueprint: New → Blueprint → pick this repo, and Render sets up the service.
+services:
+  - type: web
+    name: ask-my-ai
+    runtime: docker
+    plan: free
+    region: virginia
+    branch: main
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      # Your free Groq key. Render asks for it when you create the Blueprint;
+      # leave it empty to run without the LLM (answers show the matching facts).
+      - key: GROQ_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: llama-3.3-70b-versatile
