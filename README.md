@@ -11,7 +11,9 @@ short_description: RAG assistant that answers questions about Harshil Patel
 
 # Ask my AI: a RAG assistant for my portfolio
 
-A small retrieval-augmented generation (RAG) service that answers recruiters' questions about me, my projects, skills, and experience. It powers the **Ask my AI** chat on [harshilmayurpatel.github.io](https://harshilmayurpatel.github.io).
+**🌐 Live on my portfolio: [harshilmayurpatel.github.io](https://harshilmayurpatel.github.io/)** (use the **Ask my AI** button on any page)
+
+A small retrieval-augmented generation (RAG) service that answers recruiters' questions about me, my projects, skills, and experience. It powers the **Ask my AI** chat on my portfolio.
 
 ```
 Visitor question
