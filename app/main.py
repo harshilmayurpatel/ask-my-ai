@@ -29,8 +29,9 @@ log = logging.getLogger("api")
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     rag.store()  # load the index + embedding model once, before the first visitor
+    rag.llm()    # pick a live Groq model now (Groq retires models over time)
     log.info("Index loaded (%d chunks). LLM: %s", rag.store().index.ntotal,
-             config.LLM_MODEL if config.GROQ_API_KEY else "none (extractive fallback)")
+             rag.active_model if config.GROQ_API_KEY else "none (extractive fallback)")
     yield
 
 
@@ -95,7 +96,7 @@ def root():
 def health():
     return {
         "ok": True,
-        "model": config.LLM_MODEL if config.GROQ_API_KEY else None,
+        "model": rag.active_model if config.GROQ_API_KEY else None,
         "chunks": rag.store().index.ntotal,
         "llm": rag.llm_status,
     }

@@ -105,10 +105,11 @@ async def by_llm(text: str) -> str | None:
         return None
     actions = "\n".join(f"- {aid}: {desc}" for aid, (desc, _) in ACTIONS.items())
     try:
-        msg = await model.bind(response_format={"type": "json_object"}, max_tokens=30, temperature=0).ainvoke(
+        msg = await model.bind(response_format={"type": "json_object"}, max_tokens=300, temperature=0).ainvoke(
             [("system", PROMPT.format(actions=actions)), ("human", text)]
         )
         raw = msg.content if isinstance(msg.content, str) else str(msg.content)
+        raw = re.sub(r"<think>.*?</think>", "", raw, flags=re.S)
         m = re.search(r"\{.*\}", raw, re.S)
         action = json.loads(m.group(0)).get("action", "") if m else ""
         rag.note_llm(True)
