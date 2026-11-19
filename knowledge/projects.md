@@ -7,7 +7,7 @@ The assistant answering these questions is one of Harshil's projects. It is a re
 A Python web scraper built with Requests and BeautifulSoup that extracts real-time NBA statistics, built collaboratively. The data feeds 18+ visualizations made with Matplotlib and Seaborn, analyzing performance trends and statistical insights. Modular automation reduced redundancy by over 80% and cut execution time to under 30 seconds. It also has a Streamlit app. Tools: Python, BeautifulSoup, Pandas, Matplotlib, Seaborn, Streamlit.
 
 ## Electric Vehicle Market Analysis
-An interactive Tableau dashboard analyzing electric vehicle adoption across the U.S.: growth trends, state-level adoption maps, and BEV vs. PHEV distribution, with KPI tracking and a clean data-preparation pipeline. Tools: Tableau, Excel, data cleaning.
+An interactive Tableau dashboard built on 150,413 electric vehicle registration records: growth by model year, state-level maps, top makers and models, CAFV incentive eligibility, and BEV vs. PHEV distribution. Key findings: registrations peak at about 37,100 for model year 2023; battery electric vehicles are 77.6% of the fleet; Tesla alone is 52.7%; the average electric range is 67.8 miles. He cleaned the data in Excel (model years 2010 onward, missing ranges removed, BEV and PHEV labels standardized) and published the dashboard on Tableau Public. Tools: Tableau, Excel, data cleaning.
 
 ## AI Puzzle Solver: Sokoban game
 An AI-powered Sokoban puzzle game that uses the Depth-First Search (DFS) algorithm to find valid solution paths, with an intelligent hint mechanism to help players and improve retention. Tools: Python, HTML, CSS, search algorithms.
