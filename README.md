@@ -66,4 +66,8 @@ python -m eval.run_eval --url https://<space>.hf.space   # deployed
 
 ## API
 `POST /chat` with `{"question": "...", "history": [{"role": "user", "content": "..."}]}` streams
-`data: {"t": "..."}` events, then `data: {"done": true, "sources": [...]}`. `GET /health` reports status.
+`data: {"t": "..."}` events, then `data: {"done": true, "sources": [...]}`.
+
+`POST /intent` with `{"text": "can you make it darker"}` returns `{"action": "dark", "via": "llm"}`. The portfolio's voice mic uses it to understand free-form sentences. The model can only pick from a fixed list of site actions (validated on the server), plus `ask` for questions and `none`. Without the LLM it falls back to local embedding similarity over example phrases.
+
+`GET /health` reports status.
