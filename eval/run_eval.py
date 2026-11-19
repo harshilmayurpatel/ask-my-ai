@@ -14,6 +14,16 @@ from pathlib import Path
 QUESTIONS = json.loads((Path(__file__).parent / "questions.json").read_text(encoding="utf-8"))
 
 
+def norm(text: str) -> str:
+    """Compare text the way a reader sees it: models sometimes emit narrow
+    no-break spaces or non-breaking hyphens that look identical on screen."""
+    for ch in (" ", " ", " ", " "):
+        text = text.replace(ch, " ")
+    for ch in ("‐", "‑", "‒", "–"):
+        text = text.replace(ch, "-")
+    return " ".join(text.lower().split())
+
+
 def read_stream(text: str) -> tuple[str, list[str]]:
     answer, sources = "", []
     for line in text.splitlines():
@@ -32,8 +42,17 @@ def main() -> int:
     if args.url:
         import httpx
 
+        import time
+
         def ask(q):
-            r = httpx.post(args.url.rstrip("/") + "/chat", json={"question": q}, timeout=60)
+            # The live API allows 8 questions a minute per visitor: pace the
+            # test, and wait out a 429 instead of failing
+            time.sleep(8)
+            for _ in range(3):
+                r = httpx.post(args.url.rstrip("/") + "/chat", json={"question": q}, timeout=90)
+                if r.status_code != 429:
+                    break
+                time.sleep(61)
             r.raise_for_status()
             return read_stream(r.text)
         check_answers = True
@@ -59,7 +78,7 @@ def main() -> int:
             r_ok += hit
             line.append("retrieval " + ("ok " if hit else "MISS"))
         if check_answers:
-            good = all(e.lower() in answer.lower() for e in item["expect"])
+            good = all(norm(e) in norm(answer) for e in item["expect"])
             a_ok += good
             line.append("answer " + ("ok " if good else "MISS"))
         print(f"[{' | '.join(line)}] {item['q']}")

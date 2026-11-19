@@ -10,7 +10,7 @@ Visitor question
    ▼
 FastAPI /chat ──► FastEmbed (bge-small, local ONNX) ──► FAISS top-4 chunks
    │                                                        │
-   │◄──────── Llama 3.3 70B via Groq, grounded in chunks ◄──┘
+   │◄──────── GPT-OSS 120B via Groq, grounded in chunks ◄──┘
    ▼
 Streamed answer (Server-Sent Events) + source sections
 ```
@@ -21,7 +21,7 @@ Streamed answer (Server-Sent Events) + source sections
 | Orchestration | LangChain | Loaders, splitters, vector store and chat model in one interface |
 | Embeddings | FastEmbed `BAAI/bge-small-en-v1.5` | Runs locally on CPU (ONNX), free, no API key |
 | Vector search | FAISS | Fast in-memory similarity search, index built into the image |
-| LLM | Llama 3.3 70B on Groq | Free tier, very fast streaming |
+| LLM | GPT-OSS 120B (open-weight) on Groq | Free tier, fast streaming; the service picks a live model if one is retired |
 | API | FastAPI + SSE | Word-by-word streaming to the browser |
 | Hosting | Docker on Render | Free web service, redeploys on every push |
 

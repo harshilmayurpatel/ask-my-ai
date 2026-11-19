@@ -2,7 +2,7 @@
 
 classify(text) -> {"action": <one of ACTIONS ids | "ask" | "none">, "via": "llm"|"embeddings"|"none"}
 
-1. Llama 3.3 (Groq) picks the action, constrained to a fixed list.
+1. The Groq-hosted LLM picks the action, constrained to a fixed list.
 2. If the LLM is not configured or fails, nearest-neighbour over example
    phrases with the local embedding model (free, offline).
 Whatever the model says, only ids from ACTIONS (plus "ask"/"none") are returned.

@@ -1,7 +1,7 @@
 """Retrieval + answer generation.
 
 retrieve()      -> top-k chunks from FAISS for a question
-stream_answer() -> async generator of answer text pieces from Groq (Llama 3.3),
+stream_answer() -> async generator of answer text pieces from the Groq-hosted LLM (GPT-OSS 120B),
                    falling back to an extractive answer when Groq is not
                    configured or unavailable (rate limit, outage).
 """
@@ -66,6 +66,7 @@ def store() -> FAISS:
 # Preferred models, best first. Groq retires models over time, so the app
 # asks Groq what it offers and uses the first preferred one that is live.
 PREFERRED_MODELS = [
+    "openai/gpt-oss-120b",
     "llama-3.3-70b-versatile",
     "meta-llama/llama-4-maverick-17b-128e-instruct",
     "meta-llama/llama-4-scout-17b-16e-instruct",

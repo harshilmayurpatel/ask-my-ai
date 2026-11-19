@@ -7,7 +7,7 @@ Python, Java, C++, object-oriented programming, data structures and algorithms.
 Scikit-learn, XGBoost, TensorFlow, PyTorch, feature engineering, model evaluation, deep learning (CNNs and RNNs), and natural language processing (NLP).
 
 ## Generative AI and LLM tools
-LangChain, retrieval-augmented generation (RAG), prompt engineering, vector databases (FAISS), and the OpenAI API. He also used Groq-hosted Llama models and FastEmbed in his Ask my AI project.
+LangChain, retrieval-augmented generation (RAG), prompt engineering, vector databases (FAISS), and the OpenAI API. He also used Groq-hosted open models (GPT-OSS 120B) and FastEmbed in his Ask my AI project.
 
 ## Data processing and analytics
 Pandas, NumPy, BeautifulSoup web scraping, statistical analysis, data cleaning, and exploratory data analysis (EDA).
