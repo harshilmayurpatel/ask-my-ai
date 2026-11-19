@@ -1,5 +1,6 @@
 """FastAPI app.
 
+POST /intent {"text": "make it darker"} -> {"action": "dark", "via": "llm"|"rules"|"embeddings"}
 POST /chat   {"question": "...", "history": [{"role": "user"|"assistant", "content": "..."}]}
              -> text/event-stream of  data: {"t": "<text piece>"}
                 and a final           data: {"done": true, "sources": [...]}
@@ -19,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
-from app import config, rag
+from app import config, intent, rag
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("api")
@@ -70,13 +71,16 @@ def client_ip(request: Request) -> str:
     return fwd.split(",")[0].strip() if fwd else (request.client.host if request.client else "?")
 
 
-def check_rate(ip: str) -> None:
+_intent_hits: dict[str, deque[float]] = defaultdict(deque)
+
+
+def check_rate(ip: str, hits=_hits, per_minute=config.RATE_PER_MINUTE, per_day=config.RATE_PER_DAY) -> None:
     now = time.time()
-    q = _hits[ip]
+    q = hits[ip]
     while q and now - q[0] > 86400:
         q.popleft()
     last_minute = sum(1 for t in q if now - t < 60)
-    if last_minute >= config.RATE_PER_MINUTE or len(q) >= config.RATE_PER_DAY:
+    if last_minute >= per_minute or len(q) >= per_day:
         raise HTTPException(429, "You're asking a lot! Please wait a minute and try again.")
     q.append(now)
 
@@ -94,6 +98,17 @@ def health():
         "model": config.LLM_MODEL if config.GROQ_API_KEY else None,
         "chunks": rag.store().index.ntotal,
     }
+
+
+class IntentRequest(BaseModel):
+    text: str = Field(min_length=1, max_length=200)
+
+
+@app.post("/intent")
+async def intent_route(body: IntentRequest, request: Request):
+    """Map a spoken sentence to a portfolio action (used by the mic)."""
+    check_rate(client_ip(request), _intent_hits, config.INTENT_PER_MINUTE, config.INTENT_PER_MINUTE * 20)
+    return await intent.classify(" ".join(body.text.split()))
 
 
 def sse(obj: dict) -> str:

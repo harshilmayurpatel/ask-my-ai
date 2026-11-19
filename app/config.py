@@ -37,3 +37,7 @@ RATE_PER_MINUTE = int(os.getenv("RATE_PER_MINUTE", "8"))
 RATE_PER_DAY = int(os.getenv("RATE_PER_DAY", "60"))
 MAX_QUESTION_CHARS = int(os.getenv("MAX_QUESTION_CHARS", "400"))
 MAX_HISTORY_TURNS = int(os.getenv("MAX_HISTORY_TURNS", "6"))
+
+# Mic intent: cosine similarity needed for the no-LLM fallback to act
+INTENT_MIN_SIM = float(os.getenv("INTENT_MIN_SIM", "0.80"))
+INTENT_PER_MINUTE = int(os.getenv("INTENT_PER_MINUTE", "20"))
