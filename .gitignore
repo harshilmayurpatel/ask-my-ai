@@ -1,0 +1,6 @@
+.venv/
+.cache/
+index/
+.env
+__pycache__/
+*.pyc
