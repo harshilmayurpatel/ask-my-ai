@@ -111,9 +111,11 @@ async def by_llm(text: str) -> str | None:
         raw = msg.content if isinstance(msg.content, str) else str(msg.content)
         m = re.search(r"\{.*\}", raw, re.S)
         action = json.loads(m.group(0)).get("action", "") if m else ""
+        rag.note_llm(True)
         return action if action in VALID else "none"
     except Exception as err:
         log.warning("intent LLM failed, using embeddings: %s", err)
+        rag.note_llm(False, err)
         return None
 
 

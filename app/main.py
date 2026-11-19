@@ -97,6 +97,7 @@ def health():
         "ok": True,
         "model": config.LLM_MODEL if config.GROQ_API_KEY else None,
         "chunks": rag.store().index.ntotal,
+        "llm": rag.llm_status,
     }
 
 
